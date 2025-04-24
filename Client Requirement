@@ -1,0 +1,23 @@
+I need an experienced sysadmin to build and configure a central VULTR backup server. The server will receive daily ISO-style backup files and securely upload them to Backblaze B2.
+
+Key Tasks:
+- Deploy VPS on VULTR with 1TB+ block storage.
+- Configure server to receive backups via rclone from internal or external IPs.
+- Install and set up rclone with Backblaze B2 credentials.
+- Create a scheduled job to:
+- Upload new backup files daily to a designated B2 bucket.
+- Log upload status.
+- Automatically delete local backup files older than 24 hours.
+- Optionally use restic for deduplication and retention policies.
+- Set up system logs or alerts on upload failure.
+
+Deliverables:
+- Working backup hub server with automated uploads to B2.
+- Secure data handling configuration.
+- Documentation and retention policy notes.
+
+Ideal Skills:
+- Proficiency in VULTR, rclone, and Backblaze B2.
+- Strong background in server configuration and automation.
+- Experience with restic is a plus.
+- Good documentation skills.
