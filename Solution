@@ -1,0 +1,48 @@
+sudo apt update
+sudo apt install -y rclone cron curl unzip
+
+rclone config
+
+- Choose n for new remote.
+- Name it b2backup (or any).
+- Select 5 for *Backblaze B2*.
+- Enter Account ID and Application Key from your [Backblaze account](https://www.backblaze.com/b2/cloud-storage.html).
+- Create or specify your *bucket name*.
+
+
+sudo mkdir /mnt/backups/incoming
+sudo chmod 700 /mnt/backups/incoming 
+
+
+automate it with cron
+
+
+
+
+
+
+
+#!/bin/bash
+
+BACKUP_DIR="/mnt/backups/incoming"
+LOG_FILE="/mnt/backups/backup-upload.log"
+RCLONE_REMOTE="b2backup:BucketVULTRJM"
+
+echo "[$(date)] Starting backup upload..." >> "$LOG_FILE"
+
+for file in "$BACKUP_DIR"/*; do
+    if [ -f "$file" ]; then
+        rclone copy "$file" "$RCLONE_REMOTE" --log-level INFO --log-file "$LOG_FILE"
+        if [ $? -eq 0 ]; then
+            echo "[$(date)] Uploaded: $file" >> "$LOG_FILE"
+        else
+            echo "[$(date)] Failed upload: $file" >> "$LOG_FILE"
+        fi
+    fi
+done
+
+# Delete files older than 24 hours (fallback)
+find "$BACKUP_DIR" -type f -mmin +1440 -exec rm -f {} \;
+
+echo "[$(date)] Backup job complete." >> "$LOG_FILE"
+
